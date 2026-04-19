@@ -4,7 +4,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   const { sport, eventId, apiKey, markets } = req.query;
   if (!sport || !eventId || !apiKey) return res.status(400).json({ error: 'Missing params' });
-  const url = `https://api.the-odds-api.com/v4/sports/${sport}/events/${eventId}/odds?apiKey=${apiKey}&regions=us&markets=${markets || 'alternate_spreads,alternate_totals,team_totals'}&oddsFormat=decimal`;
+  const mkt = markets || 'alternate_spreads,alternate_totals,team_totals';
+  const url = `https://api.the-odds-api.com/v4/sports/${sport}/events/${eventId}/odds?apiKey=${apiKey}&regions=us&markets=${mkt}&oddsFormat=decimal`;
   try {
     const upstream = await fetch(url);
     const data = await upstream.json();
